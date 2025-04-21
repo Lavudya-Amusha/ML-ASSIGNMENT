@@ -12,26 +12,25 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, classification_report, mean_squared_error, r2_score
 
-# Load the Titanic dataset
+
 @st.cache
 def load_data():
     return sns.load_dataset('titanic')
 
 df = load_data()
 
-# Title and Introduction
 st.title("Titanic Dataset Machine Learning Models")
 st.write("This dashboard allows you to apply various machine learning models to the Titanic dataset and compare their performance.")
 
-# Display the Dataset
+
 st.subheader("Dataset Preview")
 st.dataframe(df.head())
 
-# Preprocess the Data
+
 st.subheader("Preprocessing the Data")
 st.write("Selecting relevant features and handling missing values...")
 
-# Feature Selection and Encoding
+
 df = df[['survived', 'pclass', 'sex', 'age', 'sibsp', 'parch', 'fare', 'embarked']]
 df.dropna(inplace=True)
 df['sex'] = df['sex'].map({'male': 0, 'female': 1})
@@ -40,12 +39,12 @@ df['embarked'] = df['embarked'].map({'C': 0, 'Q': 1, 'S': 2})
 st.write("Processed dataset:")
 st.dataframe(df.head())
 
-# Split Data
+
 X = df.drop('survived', axis=1)
 y = df['survived']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Model Selection
+
 st.subheader("Choose a Machine Learning Model")
 model_choice = st.selectbox(
     "Select a model:",
@@ -54,7 +53,7 @@ model_choice = st.selectbox(
      "Support Vector Machine (SVM)", "Naive Bayes", "K-Means Clustering"]
 )
 
-# Train and Evaluate Function
+
 def train_and_evaluate(model, regression=False):
     if regression:
         model.fit(X_train, y_train)
@@ -69,7 +68,7 @@ def train_and_evaluate(model, regression=False):
         report = classification_report(y_test, y_pred, output_dict=True)
         return acc, report
 
-# Model Training
+
 if st.button("Train Model"):
     st.write(f"### {model_choice} Results")
 
@@ -134,7 +133,6 @@ if st.button("Train Model"):
         st.write("Cluster assignment added to the dataset:")
         st.dataframe(df[['survived', 'cluster']].head())
 
-# Visualizations
 st.subheader("Visualizations")
 st.write("Correlation Heatmap:")
 
